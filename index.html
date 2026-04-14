@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Indranil Banerjee</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1614;
+      --paper: #f5f0e8;
+      --warm: #c8a96e;
+      --rust: #9b4a2b;
+      --muted: #7a6f65;
+      --faint: #e8e0d0;
+      --serif: 'Playfair Display', Georgia, serif;
+      --sans: 'DM Sans', sans-serif;
+      --mono: 'DM Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.5;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.4rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(245, 240, 232, 0.88);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--faint);
+    }
+
+    .nav-name {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      letter-spacing: 0.02em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--ink); }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      padding: 0 3rem;
+      gap: 4rem;
+      padding-top: 5rem;
+    }
+
+    .hero-left {
+      opacity: 0;
+      transform: translateY(28px);
+      animation: fadeUp 0.9s ease forwards 0.2s;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      color: var(--rust);
+      text-transform: uppercase;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-title {
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 5vw, 4.6rem);
+      line-height: 1.12;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--rust);
+    }
+
+    .hero-subtitle {
+      font-family: var(--serif);
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-style: italic;
+      color: var(--muted);
+      margin-bottom: 2.2rem;
+      font-weight: 400;
+    }
+
+    .hero-desc {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 420px;
+      margin-bottom: 2.8rem;
+      line-height: 1.8;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      padding: 0.85rem 2.2rem;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--rust);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      padding: 0.85rem 2.2rem;
+      background: transparent;
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-decoration: none;
+      border: 1.5px solid var(--faint);
+      cursor: pointer;
+      margin-left: 1rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--warm);
+      color: var(--rust);
+    }
+
+    /* Hero right - decorative */
+    .hero-right {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      animation: fadeIn 1.2s ease forwards 0.5s;
+    }
+
+    .hero-card {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 3rem 2.5rem;
+      width: 340px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: 14px; left: 14px;
+      right: -14px; bottom: -14px;
+      border: 1.5px solid var(--warm);
+      z-index: -1;
+    }
+
+    .card-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      color: var(--warm);
+      text-transform: uppercase;
+      margin-bottom: 1.6rem;
+    }
+
+    .card-items { list-style: none; }
+
+    .card-items li {
+      padding: 0.7rem 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      font-weight: 400;
+    }
+
+    .card-items li:last-child { border-bottom: none; }
+
+    .card-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--warm);
+      flex-shrink: 0;
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 0 3rem;
+      margin: 1rem 0;
+    }
+
+    .divider-line {
+      flex: 1;
+      height: 1px;
+      background: var(--faint);
+    }
+
+    .divider-text {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--muted);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* ── ABOUT ── */
+    .about {
+      padding: 6rem 3rem;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .about-label-col {
+      padding-top: 0.3rem;
+    }
+
+    .section-number {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      color: var(--warm);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .about-content {}
+
+    .about-headline {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 2.5vw, 2.1rem);
+      line-height: 1.35;
+      margin-bottom: 1.5rem;
+      color: var(--ink);
+    }
+
+    .about-headline em {
+      font-style: italic;
+      color: var(--rust);
+    }
+
+    .about-body {
+      font-size: 1rem;
+      color: var(--muted);
+      max-width: 600px;
+      line-height: 1.9;
+      margin-bottom: 1.2rem;
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 2rem;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      padding: 0.35rem 0.9rem;
+      border: 1px solid var(--faint);
+      color: var(--muted);
+      background: transparent;
+    }
+
+    /* ── SERVICES ── */
+    .services {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 6rem 3rem;
+    }
+
+    .services-header {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 5rem;
+      margin-bottom: 4rem;
+    }
+
+    .services-header .section-number { color: var(--warm); }
+    .services-header .section-title { color: rgba(245,240,232,0.4); }
+
+    .services-headline {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 2.5vw, 2.1rem);
+      line-height: 1.35;
+      color: var(--paper);
+    }
+
+    .services-headline em { font-style: italic; color: var(--warm); }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      margin-top: 3rem;
+    }
+
+    .service-card {
+      padding: 2.4rem 2rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: background 0.25s, border-color 0.25s;
+      cursor: default;
+    }
+
+    .service-card:hover {
+      background: rgba(255,255,255,0.04);
+      border-color: var(--warm);
+    }
+
+    .service-num {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      color: var(--warm);
+      margin-bottom: 1.4rem;
+    }
+
+    .service-name {
+      font-family: var(--serif);
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--paper);
+      margin-bottom: 0.9rem;
+      line-height: 1.3;
+    }
+
+    .service-desc {
+      font-size: 0.88rem;
+      color: rgba(245,240,232,0.55);
+      line-height: 1.8;
+    }
+
+    /* ── PRINCIPLES ── */
+    .principles {
+      padding: 6rem 3rem;
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .principles-list { list-style: none; }
+
+    .principle-item {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 1.2rem;
+      padding: 1.8rem 0;
+      border-bottom: 1px solid var(--faint);
+      align-items: start;
+    }
+
+    .principle-item:first-child { border-top: 1px solid var(--faint); }
+
+    .principle-arrow {
+      font-family: var(--mono);
+      color: var(--warm);
+      font-size: 0.9rem;
+      padding-top: 0.2rem;
+    }
+
+    .principle-title {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 0.4rem;
+    }
+
+    .principle-body {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.75;
+    }
+
+    /* ── CONTACT ── */
+    .contact {
+      background: var(--rust);
+      padding: 6rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .contact-left {}
+
+    .contact-eyebrow {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      color: rgba(245,240,232,0.6);
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+
+    .contact-headline {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      line-height: 1.2;
+      color: var(--paper);
+      margin-bottom: 1.4rem;
+    }
+
+    .contact-desc {
+      font-size: 0.95rem;
+      color: rgba(245,240,232,0.75);
+      line-height: 1.8;
+    }
+
+    .contact-right {}
+
+    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+
+    .form-field label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      color: rgba(245,240,232,0.6);
+      text-transform: uppercase;
+    }
+
+    .form-field input,
+    .form-field textarea {
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(245,240,232,0.2);
+      color: var(--paper);
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      padding: 0.75rem 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: none;
+    }
+
+    .form-field input::placeholder,
+    .form-field textarea::placeholder {
+      color: rgba(245,240,232,0.35);
+    }
+
+    .form-field input:focus,
+    .form-field textarea:focus {
+      border-color: rgba(245,240,232,0.7);
+    }
+
+    .btn-contact {
+      align-self: flex-start;
+      margin-top: 0.5rem;
+      padding: 0.85rem 2.2rem;
+      background: var(--paper);
+      color: var(--rust);
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .btn-contact:hover {
+      background: var(--ink);
+      color: var(--paper);
+      transform: translateY(-2px);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink);
+      padding: 2.5rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-name {
+      font-family: var(--serif);
+      font-size: 0.95rem;
+      color: rgba(245,240,232,0.6);
+    }
+
+    .footer-note {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      color: rgba(245,240,232,0.3);
+      text-transform: uppercase;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { gap: 1.2rem; }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 7rem 1.5rem 4rem;
+        gap: 3rem;
+      }
+
+      .hero-right { justify-content: flex-start; }
+      .hero-card { width: 100%; max-width: 340px; }
+
+      .about,
+      .principles,
+      .services-header {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 4rem 1.5rem;
+      }
+
+      .services { padding: 4rem 1.5rem; }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .contact {
+        grid-template-columns: 1fr;
+        padding: 4rem 1.5rem;
+        gap: 3rem;
+      }
+
+      footer {
+        flex-direction: column;
+        gap: 0.8rem;
+        text-align: center;
+        padding: 2rem 1.5rem;
+      }
+
+      .divider { padding: 0 1.5rem; }
+    }
+
+    @media (max-width: 500px) {
+      .btn-secondary { margin-left: 0; margin-top: 0.8rem; }
+      .hero-left .cta-row { display: flex; flex-direction: column; align-items: flex-start; }
+    }
+
+    .cta-row { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-name" href="#">Indranil Banerjee</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-left">
+      <p class="hero-eyebrow">— Consultant · Researcher · Builder</p>
+      <h1 class="hero-title">
+        Indranil<br />
+        <em>Banerjee</em>
+      </h1>
+      <p class="hero-subtitle">Where psychology meets systems thinking.</p>
+      <p class="hero-desc">
+        I work with founders, teams, and organisations to untangle complexity —
+        from hiring the right people to building tools that think clearly.
+        If you have a hard problem, I like hard problems.
+      </p>
+      <div class="cta-row">
+        <a href="#contact" class="btn-primary">Let's Talk</a>
+        <a href="#services" class="btn-secondary">See What I Do</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-card">
+        <p class="card-label">Areas of Work</p>
+        <ul class="card-items">
+          <li><span class="card-dot"></span> People & Hiring Strategy</li>
+          <li><span class="card-dot"></span> Team Dynamics & Culture</li>
+          <li><span class="card-dot"></span> AI-Powered Outreach Tools</li>
+          <li><span class="card-dot"></span> Systems & Org Design</li>
+          <li><span class="card-dot"></span> Research & Consulting</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <span class="divider-text">Based in West Bengal, India · Available Globally</span>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-label-col reveal">
+      <span class="section-number">01</span>
+      <span class="section-title">About</span>
+    </div>
+    <div class="about-content reveal">
+      <h2 class="about-headline">
+        A psychologist's eye,<br />
+        <em>a builder's hands.</em>
+      </h2>
+      <p class="about-body">
+        I'm Indranil — I think in systems and work with people. My background is in psychology,
+        but I've spent years applying it to the messiest parts of organisations: how teams
+        break down, why the wrong people get hired, where friction turns productive and where
+        it doesn't.
+      </p>
+      <p class="about-body">
+        Alongside consulting work, I build tools that operationalise these ideas — including
+        AI-driven products for B2B outreach and hiring intelligence. I believe the most useful
+        work sits at the intersection of human behaviour and system design.
+      </p>
+      <div class="tag-row">
+        <span class="tag">Psychology</span>
+        <span class="tag">Systems Thinking</span>
+        <span class="tag">Org Design</span>
+        <span class="tag">AI Tools</span>
+        <span class="tag">Hiring</span>
+        <span class="tag">Research</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="services-header">
+      <div class="reveal">
+        <span class="section-number">02</span>
+        <span class="section-title">Services</span>
+      </div>
+      <div class="reveal">
+        <h2 class="services-headline">
+          What I can do<br />
+          <em>for your organisation.</em>
+        </h2>
+      </div>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <p class="service-num">01</p>
+        <h3 class="service-name">Hiring Filter & Candidate Assessment</h3>
+        <p class="service-desc">
+          Go beyond CVs. I help startups build screening frameworks that identify
+          genuine fit — cognitive, cultural, and behavioural — before the first interview.
+        </p>
+      </div>
+      <div class="service-card reveal">
+        <p class="service-num">02</p>
+        <h3 class="service-name">Team Dynamics Sessions</h3>
+        <p class="service-desc">
+          Facilitated workshops that surface hidden tensions, clarify roles,
+          and convert team friction into productive energy. Grounded in psychology, not HR jargon.
+        </p>
+      </div>
+      <div class="service-card reveal">
+        <p class="service-num">03</p>
+        <h3 class="service-name">AI-Powered Outreach Strategy</h3>
+        <p class="service-desc">
+          Personalised B2B outreach that actually resonates. Using tools I've built
+          myself, I help companies craft pitches that speak to each prospect's specific context.
+        </p>
+      </div>
+      <div class="service-card reveal">
+        <p class="service-num">04</p>
+        <h3 class="service-name">Organisational Consulting</h3>
+        <p class="service-desc">
+          Structural thinking for growing teams. I diagnose entropy before it compounds —
+          role clarity, decision architecture, communication flow.
+        </p>
+      </div>
+      <div class="service-card reveal">
+        <p class="service-num">05</p>
+        <h3 class="service-name">Research & Advisory</h3>
+        <p class="service-desc">
+          For founders or investors who need a sharp thinker to explore an idea rigorously,
+          stress-test assumptions, or synthesise complex human/org dynamics.
+        </p>
+      </div>
+      <div class="service-card reveal">
+        <p class="service-num">06</p>
+        <h3 class="service-name">Custom Engagements</h3>
+        <p class="service-desc">
+          Have a problem that doesn't fit a category? That's often the most interesting kind.
+          Let's talk about what you're trying to solve.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRINCIPLES -->
+  <section class="principles" id="principles">
+    <div class="reveal">
+      <span class="section-number">03</span>
+      <span class="section-title">How I Work</span>
+    </div>
+    <div class="reveal">
+      <ul class="principles-list">
+        <li class="principle-item">
+          <span class="principle-arrow">→</span>
+          <div>
+            <p class="principle-title">Diagnosis before prescription</p>
+            <p class="principle-body">I don't arrive with a pre-packaged solution. The first job is to understand what's actually happening — which often differs from what people think is happening.</p>
+          </div>
+        </li>
+        <li class="principle-item">
+          <span class="principle-arrow">→</span>
+          <div>
+            <p class="principle-title">People are the system</p>
+            <p class="principle-body">Most organisational problems trace back to human dynamics. Strategy, process, and tools only work when the people running them are aligned.</p>
+          </div>
+        </li>
+        <li class="principle-item">
+          <span class="principle-arrow">→</span>
+          <div>
+            <p class="principle-title">Clarity over complexity</p>
+            <p class="principle-body">My job is to reduce confusion, not perform it. Everything I deliver should make your situation clearer, not generate more consultancy dependency.</p>
+          </div>
+        </li>
+        <li class="principle-item">
+          <span class="principle-arrow">→</span>
+          <div>
+            <p class="principle-title">Small engagements, real trust</p>
+            <p class="principle-body">I take on a small number of engagements at a time. You'll get my actual attention — not a junior's summary of a template.</p>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="contact-left reveal">
+      <p class="contact-eyebrow">04 — Get in Touch</p>
+      <h2 class="contact-headline">Let's figure out if I can help.</h2>
+      <p class="contact-desc">
+        No pitch decks, no intake forms with 20 fields. Just tell me what you're working on —
+        even if it's vague — and we'll work out whether there's a fit.
+      </p>
+    </div>
+    <div class="contact-right reveal">
+      <div class="contact-form">
+        <div class="form-field">
+          <label>Your name</label>
+          <input type="text" placeholder="How should I address you?" />
+        </div>
+        <div class="form-field">
+          <label>Email</label>
+          <input type="email" placeholder="your@email.com" />
+        </div>
+        <div class="form-field">
+          <label>What's on your mind?</label>
+          <textarea rows="4" placeholder="Describe the problem, the project, or just the general situation..."></textarea>
+        </div>
+        <button class="btn-contact" onclick="handleContact()">Send Message</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span class="footer-name">Indranil Banerjee</span>
+    <span class="footer-note">West Bengal, India &nbsp;·&nbsp; Available Globally</span>
+  </footer>
+
+  <script>
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(el => {
+        if (el.isIntersecting) {
+          el.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    // Contact form placeholder
+    function handleContact() {
+      const btn = document.querySelector('.btn-contact');
+      btn.textContent = 'Message Sent ✓';
+      btn.style.background = '#1a1614';
+      btn.style.color = '#f5f0e8';
+      btn.disabled = true;
+    }
+  </script>
+
+</body>
+</html>
