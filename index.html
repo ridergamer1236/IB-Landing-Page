@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Indranil Banerjee</title>
+  <link rel="icon" type="image/png" href="logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@300&display=swap" rel="stylesheet" />
@@ -64,7 +65,20 @@
       letter-spacing: 0.02em;
       color: var(--ink);
       text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
     }
+
+    .nav-logo {
+      width: 28px;
+      height: 28px;
+      object-fit: contain;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+    }
+
+    .nav-name:hover .nav-logo { opacity: 1; }
 
     .nav-links {
       display: flex;
@@ -181,6 +195,26 @@
       border-color: var(--warm);
       color: var(--rust);
     }
+
+    /* Hero watermark */
+    .hero {
+      position: relative;
+    }
+
+    .hero-watermark {
+      position: absolute;
+      right: -5%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 55vw;
+      max-width: 650px;
+      opacity: 0.035;
+      pointer-events: none;
+      z-index: 0;
+      filter: grayscale(1);
+    }
+
+    .hero-left, .hero-right { position: relative; z-index: 1; }
 
     /* Hero right - decorative */
     .hero-right {
@@ -644,7 +678,7 @@
 
   <!-- NAV -->
   <nav>
-    <a class="nav-name" href="#">Indranil Banerjee</a>
+    <a class="nav-name" href="#"><img src="logo.png" alt="IB" class="nav-logo" />Indranil Banerjee</a>
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#services">Services</a></li>
@@ -654,6 +688,7 @@
 
   <!-- HERO -->
   <section class="hero">
+    <img src="logo.png" alt="" class="hero-watermark" />
     <div class="hero-left">
       <p class="hero-eyebrow">— Consultant · Researcher · Builder</p>
       <h1 class="hero-title">
@@ -861,7 +896,7 @@
 
   <!-- FOOTER -->
   <footer>
-    <span class="footer-name">Indranil Banerjee</span>
+    <span class="footer-name"><img src="logo.png" alt="IB" style="width:22px;height:22px;object-fit:contain;vertical-align:middle;margin-right:0.5rem;opacity:0.5;filter:invert(1);" />Indranil Banerjee</span>
     <span class="footer-note">West Bengal, India &nbsp;·&nbsp; Available Globally</span>
   </footer>
 
